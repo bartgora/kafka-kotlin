@@ -6,14 +6,13 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.*
-import java.util.function.Consumer
 
 class RecordConsumer {
     private val props = Properties()
 
     init {
         props["bootstrap.servers"] = "localhost:9092"
-        props["group.id"] = "CountryCounter"
+        props["group.id"] = "ConsumerGroup1"
         props["key.deserializer"] = StringDeserializer::class.java
         props["value.deserializer"] = StringDeserializer::class.java
     }
@@ -25,7 +24,11 @@ class RecordConsumer {
         while (true) {
             println("Reading..")
             val records = consumer.poll(Duration.of(30, ChronoUnit.SECONDS))
-            records.forEach(Consumer { record: ConsumerRecord<String, String> -> println("Partition read:" + record.partition() + " Key: " + record.key() + " Value:" + record.value() + " Offset: " + record.offset()) })
+            records.forEach { record: ConsumerRecord<String, String> ->
+                println(
+                    "Partition read:${record.partition()} Key: ${record.key()} Value:${record.value()} Offset: ${record.offset()}"
+                )
+            }
         }
     }
 

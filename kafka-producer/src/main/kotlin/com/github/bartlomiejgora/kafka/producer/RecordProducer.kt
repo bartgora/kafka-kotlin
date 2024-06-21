@@ -14,7 +14,7 @@ class RecordProducer {
 
     init {
         properties["bootstrap.servers"] = "localhost:9092"
-        properties["client.id"] = "prod1"
+        properties["client.id"] = "producer1"
         properties["acks"] = "1"
         properties["key.serializer"] = StringSerializer::class.java
         properties["value.serializer"] = StringSerializer::class.java
@@ -23,14 +23,10 @@ class RecordProducer {
 
     fun send(key: String?, value: String?): String? {
         val producer: Producer<String?, String?> = KafkaProducer<String?, String?>(properties)
-        val response: Response = Response()
+        val response = Response()
         val producerRecord = ProducerRecord(TOPIC, key, value)
         producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
-            handleResponse(
-                recordMetadata,
-                e,
-                response
-            )
+            handleResponse(recordMetadata, e, response)
         }
         producer.close()
         return response.value
