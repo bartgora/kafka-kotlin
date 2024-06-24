@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.producer
+package com.github.bartgora.kafka.producer
 
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer

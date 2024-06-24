@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.consumer
+package com.github.bartgora.kafka.consumer
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication

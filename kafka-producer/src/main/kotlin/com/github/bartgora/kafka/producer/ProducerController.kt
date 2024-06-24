@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.producer
+package com.github.bartgora.kafka.producer
 
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

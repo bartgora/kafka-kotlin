@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.producer
+package com.github.bartgora.kafka.producer
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
