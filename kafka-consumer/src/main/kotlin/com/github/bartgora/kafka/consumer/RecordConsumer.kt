@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.consumer
+package com.github.bartgora.kafka.consumer
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer

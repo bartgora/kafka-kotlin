@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.producer
+package com.github.bargora.kafka.producer
 
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -11,5 +11,5 @@ class ProducerController(private val producer: RecordProducer) {
         return producer.send(request.key, request.value)
     }
 
-    data class Request(val key: String, val value: String)
+    data class Request(val key: String?, val value: String)
 }

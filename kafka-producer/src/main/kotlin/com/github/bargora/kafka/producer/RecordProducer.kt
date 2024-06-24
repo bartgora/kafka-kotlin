@@ -1,4 +1,4 @@
-package com.github.bartlomiejgora.kafka.producer
+package com.github.bargora.kafka.producer
 
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
@@ -21,8 +21,8 @@ class RecordProducer {
         properties["partitions"] = "3"
     }
 
-    fun send(key: String?, value: String?): String? {
-        val producer: Producer<String?, String?> = KafkaProducer<String?, String?>(properties)
+    fun send(key: String?, value: String): String? {
+        val producer: Producer<String?, String?> = KafkaProducer<String?, String>(properties)
         val response = Response()
         val producerRecord = ProducerRecord(TOPIC, key, value)
         producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
