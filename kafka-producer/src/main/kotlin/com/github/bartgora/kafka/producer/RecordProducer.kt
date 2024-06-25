@@ -21,20 +21,21 @@ class RecordProducer {
         properties["partitions"] = "3"
     }
 
-    fun send(key: String?, value: String?): String? {
+    fun send(key: String?, value: String?) {
         val producer: Producer<String?, String?> = KafkaProducer<String?, String?>(properties)
-        val response = Response()
-        val producerRecord = ProducerRecord(TOPIC, key, value)
-        producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
-            handleResponse(recordMetadata, e, response)
+        producer.use {
+            val response = Response()
+            val producerRecord = ProducerRecord(TOPIC, key, value)
+            producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
+                handleResponse(recordMetadata, e, response)
+            }
         }
-        producer.close()
-        return response.value
+
     }
 
     private fun handleResponse(recordMetadata: RecordMetadata, e: Exception?, response: Response) {
         e?.printStackTrace()
-        response.value = ("topic: " + recordMetadata.topic() + " Partition: "
+        println("topic: " + recordMetadata.topic() + " Partition: "
                 + recordMetadata.partition() + " Offset: " + recordMetadata.offset()
                 + " timestamp: " + recordMetadata.timestamp())
     }
