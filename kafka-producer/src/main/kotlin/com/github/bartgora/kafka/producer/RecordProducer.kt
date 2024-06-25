@@ -1,9 +1,6 @@
 package com.github.bartgora.kafka.producer
 
-import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.Producer
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.clients.producer.RecordMetadata
+import org.apache.kafka.clients.producer.*
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,33 +15,35 @@ class RecordProducer {
         properties["acks"] = "1"
         properties["key.serializer"] = StringSerializer::class.java
         properties["value.serializer"] = StringSerializer::class.java
-        properties["partitions"] = "3"
+        properties["partitions"] = "2"
+        properties["batch.size"] = 1024
+        properties[ProducerConfig.PARTITIONER_CLASS_CONFIG] = RoundRobinPartitioner::class.java
     }
 
-    fun send(key: String?, value: String?) {
+    fun send(requests: List<KafkaRequest>) {
         val producer: Producer<String?, String?> = KafkaProducer<String?, String?>(properties)
         producer.use {
-            val response = Response()
-            val producerRecord = ProducerRecord(TOPIC, key, value)
-            producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
-                handleResponse(recordMetadata, e, response)
+            for (request in requests) {
+                val producerRecord = ProducerRecord(TOPIC, request.key, request.value)
+                producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
+                    handleResponse(recordMetadata, e)
+                }
             }
+
         }
 
     }
 
-    private fun handleResponse(recordMetadata: RecordMetadata, e: Exception?, response: Response) {
+    private fun handleResponse(recordMetadata: RecordMetadata, e: Exception? ) {
         e?.printStackTrace()
         println("topic: " + recordMetadata.topic() + " Partition: "
                 + recordMetadata.partition() + " Offset: " + recordMetadata.offset()
                 + " timestamp: " + recordMetadata.timestamp())
     }
 
-    internal inner class Response {
-        var value: String? = null
-    }
-
     companion object {
         private const val TOPIC = "fun-with-kafka-topic"
     }
 }
+
+data class KafkaRequest(val key: String?, val value: String?)
