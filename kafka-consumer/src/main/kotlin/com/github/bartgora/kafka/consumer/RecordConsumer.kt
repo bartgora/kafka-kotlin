@@ -1,5 +1,6 @@
 package com.github.bartgora.kafka.consumer
 
+import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -11,10 +12,10 @@ class RecordConsumer {
     private val props = Properties()
 
     init {
-        props["bootstrap.servers"] = "localhost:9092"
-        props["group.id"] = "ConsumerGroup1"
-        props["key.deserializer"] = StringDeserializer::class.java
-        props["value.deserializer"] = StringDeserializer::class.java
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "ConsumerGroup1"
+        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
     }
 
     fun consume() {

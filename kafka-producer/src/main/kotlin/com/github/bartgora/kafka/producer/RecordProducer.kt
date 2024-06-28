@@ -10,14 +10,12 @@ class RecordProducer {
     private val properties = Properties()
 
     init {
-        properties["bootstrap.servers"] = "localhost:9092"
-        properties["client.id"] = "producer1"
-        properties["acks"] = "1"
-        properties["key.serializer"] = StringSerializer::class.java
-        properties["value.serializer"] = StringSerializer::class.java
-        properties["partitions"] = "2"
-        properties["batch.size"] = 1024
-        properties[ProducerConfig.PARTITIONER_CLASS_CONFIG] = RoundRobinPartitioner::class.java
+        properties[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092"
+        properties[ProducerConfig.CLIENT_ID_CONFIG] = "producer1"
+        properties[ProducerConfig.ACKS_CONFIG] = "1"
+        properties[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+        properties[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+
     }
 
     fun send(requests: List<KafkaRequest>) {
