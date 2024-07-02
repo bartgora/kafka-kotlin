@@ -7,7 +7,7 @@ Open both projects (you may import whole folder as a project into Intelij Idea)
 
 then run:</br>
 ```shell
-  docker compose up -d
+docker compose up -d
 ```
 And: </br>
 ```shell
