@@ -5,7 +5,11 @@ A sample Kafka producer and consumer implemented in kotlin.
 To start:
 Open both projects (you may import whole folder as a project into Intelij Idea)
 
-run:</br>
+then run:</br>
+```shell
+  docker compose up -d
+```
+And: </br>
 ```shell
 docker exec kafka /bin/kafka-topics --bootstrap-server localhost:9092 --create --topic fun-with-kafka-topic --partitions 3 --replication-factor 1
 ```
