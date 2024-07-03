@@ -13,12 +13,11 @@ class RecordProducer {
     private val properties = Properties()
 
     init {
-        properties["bootstrap.servers"] = "localhost:9092"
+        properties["bootstrap.servers"] = "localhost:9092, localhost:9093"
         properties["client.id"] = "producer1"
         properties["acks"] = "1"
         properties["key.serializer"] = StringSerializer::class.java
         properties["value.serializer"] = StringSerializer::class.java
-        properties["partitions"] = "3"
     }
 
     fun send(key: String?, value: String?): String? {
