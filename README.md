@@ -11,7 +11,7 @@ docker compose up -d
 
 run:</br>
 ```shell
-docker exec kafka /bin/kafka-topics --bootstrap-server localhost:9092 --create --topic fun-with-kafka-topic --partitions 3 --replication-factor 1
+docker exec kafka1 /bin/kafka-topics --bootstrap-server localhost:9092 --create --topic fun-with-kafka-topic --partitions 3 --replication-factor 2
 ```
 
 That will configure kafka to use topic named ' fun-with-kafka-topic' with 3 partitions, and replication-factor= 1.</br>

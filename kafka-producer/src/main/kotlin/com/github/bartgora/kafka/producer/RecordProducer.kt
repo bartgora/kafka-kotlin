@@ -1,9 +1,6 @@
 package com.github.bartgora.kafka.producer
 
-import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.Producer
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.clients.producer.RecordMetadata
+import org.apache.kafka.clients.producer.*
 import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.stereotype.Service
 import java.util.*
@@ -13,36 +10,38 @@ class RecordProducer {
     private val properties = Properties()
 
     init {
-        properties["bootstrap.servers"] = "localhost:9092, localhost:9093"
-        properties["client.id"] = "producer1"
-        properties["acks"] = "1"
-        properties["key.serializer"] = StringSerializer::class.java
-        properties["value.serializer"] = StringSerializer::class.java
+        properties[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = "localhost:9092,localhost:9091"
+        properties[ProducerConfig.CLIENT_ID_CONFIG] = "producer1"
+        properties[ProducerConfig.ACKS_CONFIG] = "1"
+        properties[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+        properties[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+
     }
 
-    fun send(key: String?, value: String?): String? {
+    fun send(requests: List<KafkaRequest>) {
         val producer: Producer<String?, String?> = KafkaProducer<String?, String?>(properties)
-        val response = Response()
-        val producerRecord = ProducerRecord(TOPIC, key, value)
-        producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
-            handleResponse(recordMetadata, e, response)
+        producer.use {
+            for (request in requests) {
+                val producerRecord = ProducerRecord(TOPIC, request.key, request.value)
+                producer.send(producerRecord) { recordMetadata: RecordMetadata, e: Exception? ->
+                    handleResponse(recordMetadata, e)
+                }
+            }
+
         }
-        producer.close()
-        return response.value
+
     }
 
-    private fun handleResponse(recordMetadata: RecordMetadata, e: Exception?, response: Response) {
+    private fun handleResponse(recordMetadata: RecordMetadata, e: Exception? ) {
         e?.printStackTrace()
-        response.value = ("topic: " + recordMetadata.topic() + " Partition: "
+        println("topic: " + recordMetadata.topic() + " Partition: "
                 + recordMetadata.partition() + " Offset: " + recordMetadata.offset()
                 + " timestamp: " + recordMetadata.timestamp())
-    }
-
-    internal inner class Response {
-        var value: String? = null
     }
 
     companion object {
         private const val TOPIC = "fun-with-kafka-topic"
     }
 }
+
+data class KafkaRequest(val key: String?, val value: String?)

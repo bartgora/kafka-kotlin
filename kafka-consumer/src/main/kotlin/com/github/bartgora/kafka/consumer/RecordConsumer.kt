@@ -11,7 +11,7 @@ class RecordConsumer {
     private val props = Properties()
 
     init {
-        props["bootstrap.servers"] = "localhost:9092,localhost:9093"
+        props["bootstrap.servers"] = "localhost:9092,localhost:9091"
         props["group.id"] = "ConsumerGroup1"
         props["key.deserializer"] = StringDeserializer::class.java
         props["value.deserializer"] = StringDeserializer::class.java
